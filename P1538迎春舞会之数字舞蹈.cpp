@@ -1,115 +1,102 @@
 #include <iostream>
-#include <algorithm>
-#include <cstdio>
+#include <string>
 using namespace std;
-long long opt[25][25];
-int dir[9][2] = {-1, -2, -2, -1, 1, -2, 2, -1, 2, 1, 1, 2, -1, 2, -2, 1};
-bool vis[25][25];
-int n, m;
-bool isok(int x, int y)
+string a[10][5] =
+	{{" - ", "| |", "   ", "| |", " - "},
+	 {"   ", "  |", "   ", "  |", "   "},
+	 {" - ", "  |", " - ", "|  ", " - "},
+	 {" - ", "  |", " - ", "  |", " - "},
+	 {"   ", "| |", " - ", "  |", "   "},
+	 {" - ", "|  ", " - ", "  |", " - "},
+	 {" - ", "|  ", " - ", "| |", " - "},
+	 {" - ", "  |", "   ", "  |", "   "},
+	 {" - ", "| |", " - ", "| |", " - "},
+	 {" - ", "| |", " - ", "  |", " - "}};
+string s;
+int k;
+void fun(int p)
 {
-	if (x < 0 || y < 0 || x > n || y > m)
+	for (int m = 0; m < s.size(); m++)
 	{
-		return false;
-	}
-	return true;
-}
-void build(int x, int y)
-{
-	for (int i = 0; i < 9; i++)
-	{
-		if (isok(x - dir[i][0], y - dir[i][1]))
+		int y = s[m] - '0';
+		if (m != 0)
 		{
-			vis[x - dir[i][0]][y - dir[i][1]] = false;
-			opt[x - dir[i][0]][y - dir[i][1]] = 0;
+			cout << " ";
 		}
-	}
-	int t = 1;
-	for (int i = 0; i <= n; i++)
-	{
-		if (vis[0][i] && t)
+		cout << a[y][p][0];
+		for (int x = 0; x < k; x++)
 		{
-			opt[0][i] = 1;
+			cout << a[y][p][1];
 		}
-		else
-		{
-			opt[0][i] = 0;
-		}
-	}
-	int t = 1;
-	for (int i = 0; i <= m; i++)
-	{
-		if (vis[i][0] && t)
-		{
-			opt[i][0] = 1;
-		}
-		else
-		{
-			opt[i][0] = 0;
-		}
-	}
-	for (int i = 0; i <= n; i++)
-	{
-		for (int j = 0; j <= m; j++)
-		{
-			if (vis[i][j])
-			{
-				cout << 1 << ' ';
-			}
-			else
-			{
-				cout << 0 << ' ';
-			}
-		}
-		cout << endl;
-	}
-	for (int i = 0; i <= n; i++)
-	{
-		for (int j = 0; j <= m; j++)
-		{
-			cout << opt[i][j] << ' ';
-		}
-		cout << endl;
-	}
-}
-void dp(int x, int y)
-{
-	for (int i = x; i <= n; i++)
-	{
-		for (int j = y; j <= m; j++)
-		{
-			if (vis[i][j])
-			{
-				if (vis[i - 1][j] || vis[i][j - 1])
-				{
-					opt[i][j] = opt[i - 1][j] + opt[i][j - 1];
-				}
-				else if (!vis[i - 1][j] && !vis[i][j - 1])
-				{
-					opt[i][j] = 0;
-				}
-			}
-		}
+		cout << a[y][p][2];
 	}
 }
 int main()
 {
-	int x, y;
-	cin >> n >> m >> x >> y;
-	for (int i = 0; i <= n; i++)
+	cin >> k;
+	cin >> s;
+	for (int p = 0; p < 5; p++)
 	{
-		fill(vis[i], vis[i] + m + 1, true);
-	}
-	build(x, y);
-	dp(0, 0);
-	for (int i = 0; i <= n; i++)
-	{
-		for (int j = 0; j <= m; j++)
+		if (p % 2 == 0)
 		{
-			printf("%-5d", opt[i][j]);
+			fun(p);
+			cout << endl;
 		}
-		cout << endl;
+		else
+		{
+			for (int x = 0; x < k; x++)
+			{
+				fun(p);
+				cout << endl;
+			}
+		}
 	}
 	system("pause");
 	return 0;
 }
+// #include <bits/stdc++.h>
+// using namespace std;
+// int main()
+// {
+//     int k;
+//     string s, m[10] = {"-|| ||-", "  |  | ", "- |-| -",
+//                        "- |- |-", " ||- | ", "-| - |-", "-| -||-",
+//                        "- |  | ", "-||-||-", "-||- |-"};
+//     cin >> k >> s;
+//     for (int p = 0; p < 7; p++)
+//     {
+//         if (p == 2 || p == 5)
+//             continue;
+//         if (p % 3 == 0)
+//         {
+//             for (int i = 0; i < s.size(); i++)
+//             {
+//                 cout << ' ';
+//                 for (int j = 0; j < k; j++)
+//                 {
+//                     cout << m[s[i] - 48][p];
+//                 }
+//                 cout << "  ";
+//             }
+//             cout << endl;
+//         }
+//         else
+//         {
+//             for (int q = 0; q < k; q++)
+//             {
+//                 for (int i = 0; i < s.size(); i++)
+//                 {
+//                     cout << m[s[i] - 48][p];
+//                     for (int j = 0; j < k; j++)
+//                     {
+//                         cout << ' ';
+//                     }
+//                     cout << m[s[i] - 48][p + 1] << ' ';
+//                 }
+//                 cout << endl;
+//             }
+//         }
+//     }
+//     system("pause");
+//     return 0;
+// }
